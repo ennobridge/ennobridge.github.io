@@ -38,5 +38,37 @@ def career():
 def blog():
     return render_template('blog.html')
 
+@app.route("/payment")
+def payment():
+    return render_template('payment.html')
+
+@app.route('/success')
+def success():
+    return render_template('success.html')
+
+@app.route('/pay',methods=['POST','GET'])
+def pay():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        purpose = request.form.get('purpose')
+        email = request.form.get('email')
+        amount = request.form.get('amount')
+
+        response = api.payment_request_create(
+            amount=amount,
+            purpose=purpose,
+            buyer_name=name,
+            send_email=True,
+            email=email,
+            redirect_url = "http://localhost:5000/success"
+        )
+
+
+        return redirect(response['payment_request']['longurl'])
+
+    else:
+        return redirect("/")
+
+
 
 app.run(debug=True)
