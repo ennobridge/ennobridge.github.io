@@ -1,5 +1,10 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
+from instamojo_wrapper import Instamojo
+API_KEY = "test_e7d10a1857a494fd016051d8fcd"
+AUTH_TOKEN = "test_d5264a300fc5205c2de74859588"
 
+api = Instamojo(api_key=API_KEY,auth_token=AUTH_TOKEN,
+                endpoint="https://test.instamojo.com/api/1.1/")
 app = Flask(__name__)
 
 
