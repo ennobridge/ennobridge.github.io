@@ -2,9 +2,9 @@ from flask import Flask, request, render_template, redirect
 from instamojo_wrapper import Instamojo
 API_KEY = "test_e7d10a1857a494fd016051d8fcd"
 AUTH_TOKEN = "test_d5264a300fc5205c2de74859588"
+endpoint = "https://test.instamojo.com/api/1.1/"
 
-api = Instamojo(api_key=API_KEY,auth_token=AUTH_TOKEN,
-                endpoint="https://test.instamojo.com/api/1.1/")
+api = Instamojo(api_key=API_KEY,auth_token=AUTH_TOKEN,endpoint=endpoint)
 app = Flask(__name__)
 
 
@@ -12,11 +12,6 @@ app = Flask(__name__)
 @app.route("/index")
 def index():
     return render_template('index.html')
-
-
-@app.route("/home")
-def home():
-    return render_template('home.html')
 
 
 @app.route("/about")
@@ -33,11 +28,16 @@ def service():
 def contact():
     return render_template('contact.html')
 
-
-@app.route("/career")
-def career():
-    return render_template('career.html')
-
+@app.route('/save', methods=['POST'])
+def save():
+    name = request.form['name']
+    email = request.form['email']
+    message = request.form['message']
+    if request.method == 'POST':
+        print(name, email, message)
+        with open('data.txt', 'a+') as f:
+            f.write(str(name) + ' ,' + str(email) + ' ,' + str(message) +'\n')
+    return render_template("contact.html")
 
 @app.route("/blog")
 def blog():
